@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: user-service
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tinyurl
+    username: adityasawant
+    password: S@10dulkar
+server:
+  port: 8081
+gateway:
+  ip: 10.0.0.16
+eureka:
+  client:
+    hostname: localhost
+    service-url:
+      defaultZone: http://${eureka.client.hostname}:8001/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 10 #send heartbeat every 10 seconds
+    lease-expiration-duration-in-seconds: 30 #instance will be marked as unresponsive after 30 seconds
+jwt:
+  token: l<3,.g(B-mzBdF*
