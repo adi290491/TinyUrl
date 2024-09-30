@@ -1,0 +1,10 @@
+spring:
+  profile:
+    active: dev
+  application:
+    name: discovery-service
+server:
+  port: 7001
+tinyurl:
+  api:
+    url: "www.tinyurl.com"

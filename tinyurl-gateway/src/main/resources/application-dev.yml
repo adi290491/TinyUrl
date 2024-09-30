@@ -1,0 +1,7 @@
+spring:
+  profile:
+    active: dev
+  application:
+    name: tinyurl-gateway
+server:
+  port: 7000
