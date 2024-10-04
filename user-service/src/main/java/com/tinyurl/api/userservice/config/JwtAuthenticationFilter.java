@@ -2,8 +2,8 @@ package com.tinyurl.api.userservice.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tinyurl.api.userservice.model.LoginRequestModel;
+import com.tinyurl.api.userservice.model.UserDTO;
 import com.tinyurl.api.userservice.service.UserManagementService;
-import com.tinyurl.api.userservice.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,18 +14,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Component
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final UserManagementService userManagementService;
     private final JwtUtil jwtUtil;
-    @Autowired
+
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserManagementService userManagementService) {
         super(authenticationManager);
         this.jwtUtil = jwtUtil;
@@ -52,9 +52,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
         String username = user.getUsername();
+        UserDTO userDetails = userManagementService.getUserDetailsByEmail(username);
+        String token = jwtUtil.generateToken(userDetails);
 
-        UserDetails userDetails =  userManagementService.loadUserByUsername(username);
-
+        response.addHeader("token", token);
+        response.addHeader("userId", userDetails.getUserId());
 
     }
 

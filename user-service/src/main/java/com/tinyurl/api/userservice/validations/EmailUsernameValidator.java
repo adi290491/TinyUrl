@@ -14,7 +14,7 @@ public class EmailUsernameValidator implements ConstraintValidator<EmailOrUserna
     @Override
     public boolean isValid(LoginRequestModel loginRequest, ConstraintValidatorContext context) {
         boolean emailProvided = loginRequest.getEmail() != null && !loginRequest.getEmail().isEmpty();
-        boolean usernameProvided = loginRequest.getUsername() != null && !loginRequest.getUsername().isEmpty();
+        boolean usernameProvided = loginRequest.getEmail() != null && !loginRequest.getEmail().isEmpty();
 
         // Return true if either email or username is provided but not both
         return (emailProvided ^ usernameProvided); // XOR: one or the other, but not both

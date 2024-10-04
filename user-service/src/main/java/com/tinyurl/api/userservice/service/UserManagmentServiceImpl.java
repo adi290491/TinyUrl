@@ -52,12 +52,23 @@ public class UserManagmentServiceImpl implements UserManagementService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUsername(username);
+        UserEntity userEntity = userRepository.findByEmail(username);
 
         if (userEntity == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }
 
         return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), true, true, true, true, new ArrayList<>());
+    }
+
+    @Override
+    public UserDTO getUserDetailsByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity == null) {
+            throw new UsernameNotFoundException("User not found: " + email);
+        }
+
+        return  modelMapper.map(userEntity, UserDTO.class);
     }
 }
