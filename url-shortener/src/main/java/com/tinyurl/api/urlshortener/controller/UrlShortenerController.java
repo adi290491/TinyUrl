@@ -41,6 +41,23 @@ public class UrlShortenerController {
         return new ResponseEntity<>(urlDTO.getShortUrl(), status);
     }
 
+    @PostMapping(
+            value = "/v2/shorten",
+            consumes = "application/json",
+            produces = "application/json"
+    )
+    public ResponseEntity<UrlDTO> shortenUrlRedis(@Valid @RequestBody UrlRequestModel urlRequestModel) {
+
+        UrlDTO urlDTO =  urlShortenerService.shortenUrlV2(urlRequestModel.getLongUrl());
+        HttpStatus status;
+        if (!urlDTO.isNew()) {
+            status = HttpStatus.OK;
+        } else {
+            status = HttpStatus.CREATED;
+        }
+        return new ResponseEntity<>(urlDTO, status);
+    }
+
     @GetMapping(
             value = "/v1/{shorturl}"
     )
@@ -58,6 +75,33 @@ public class UrlShortenerController {
             return new ResponseEntity<>("URL not found", HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @GetMapping(
+            value = "/v2/{shortUrl}"
+    )
+    public ResponseEntity<?> redirectToLongUrlRedis(@PathVariable(name="shortUrl") String shortUrl) {
+
+        // TODO: implement actual redirection logic
+        String longUrl = urlShortenerService.getLongUrlV2(shortUrl);
+
+        if (longUrl != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Location", longUrl);
+
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+        } else {
+            return new ResponseEntity<>("URL not found", HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @DeleteMapping(
+            value = "/v2/{shortUrl}"
+    )
+    public ResponseEntity<Boolean> deleteShortenedUrl(@PathVariable(name="shortUrl") String shortUrl) {
+
+        return new ResponseEntity<>(urlShortenerService.deleteShortUrl(shortUrl), HttpStatus.OK);
     }
 
 }

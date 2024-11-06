@@ -2,8 +2,8 @@ package com.tinyurl.api.userservice.config;
 
 import com.tinyurl.api.userservice.model.UserDTO;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ public class JwtUtil {
                 .subject(userDetails.getUserId())
                 .expiration(Date.from(now().plus(1, ChronoUnit.HOURS)))
                 .issuedAt(Date.from(now()))
-                .signWith(secretKey)
+                .signWith(secretKey, Jwts.SIG.HS256)
                 .compact();
 
     }
