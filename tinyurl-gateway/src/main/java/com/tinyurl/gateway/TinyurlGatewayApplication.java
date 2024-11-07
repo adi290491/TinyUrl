@@ -24,28 +24,5 @@ public class TinyurlGatewayApplication {
 		return WebClient.builder();
 	}
 
-//	@Bean
-	/*public RouteLocator routeLocator(RouteLocatorBuilder routeLocatorBuilder, AuthorizationHeaderGatewayFilterFactory authorizationHeaderGatewayFilterFactory ) throws NoSuchAlgorithmException {
 
-		AuthorizationHeaderGatewayFilterFactory.Config config = new AuthorizationHeaderGatewayFilterFactory.Config();
-		config.setAlgorithm("SHA-256");
-		return routeLocatorBuilder.routes()
-				.route("tinyurl-shorten", p -> p.path("/url-shortener/api/v1/shorten")
-						.and()
-						.method(HttpMethod.POST)
-						.filters(f -> f
-								.removeRequestHeader("Cookie")
-								.rewritePath("/url-shortener/?(?<segment>.*)", "/$\\{segment})")
-								.filter(authorizationHeaderGatewayFilterFactory.apply(config)))
-						.uri("lb://url-shortener"))
-				.route("tinyurl-redirect", p -> p.path("/url-shortener/api/v1/**")
-						.and()
-						.method(HttpMethod.GET)
-						.filters(f -> f
-								.removeRequestHeader("Cookie")
-								.rewritePath("/url-shortener/?(?<segment>.*)", "/$\\{segment})")
-								.filter(authorizationHeaderGatewayFilterFactory.apply(config)))
-						.uri("lb://url-shortener"))
-						.build();
-	}*/
 }
