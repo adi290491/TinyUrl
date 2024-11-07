@@ -25,7 +25,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService{
     private String redirectPrefix;
 
     @Autowired
-    public UrlShortenerServiceImpl(UrlUtil urlUtil, ModelMapper modelMapper, RedisTemplate<String, String> redisTemplate) {
+    public UrlShortenerServiceImpl(UrlUtil urlUtil, RedisTemplate<String, String> redisTemplate) {
         this.urlUtil = urlUtil;
         this.redisTemplate = redisTemplate;
     }

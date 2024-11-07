@@ -28,7 +28,7 @@ public class UrlShortenerController {
             consumes = "application/json",
             produces = "application/json"
     )
-    public ResponseEntity<UrlDTO> shortenUrlRedis(@Valid @RequestBody UrlRequestModel urlRequestModel) {
+    public ResponseEntity<UrlDTO> shortenUrl(@Valid @RequestBody UrlRequestModel urlRequestModel) {
 
         UrlDTO urlDTO =  urlShortenerService.shortenUrl(urlRequestModel.getLongUrl());
         HttpStatus status;
@@ -43,7 +43,7 @@ public class UrlShortenerController {
     @GetMapping(
             value = "/v2/{shortUrl}"
     )
-    public ResponseEntity<?> redirectToLongUrlRedis(@PathVariable(name="shortUrl") String shortUrl) {
+    public ResponseEntity<?> doRedirect(@PathVariable(name="shortUrl") String shortUrl) {
 
         // TODO: implement actual redirection logic
         String longUrl = urlShortenerService.getLongUrl(shortUrl);
@@ -62,7 +62,7 @@ public class UrlShortenerController {
     @DeleteMapping(
             value = "/v2/{shortUrl}"
     )
-    public ResponseEntity<Boolean> deleteShortenedUrl(@PathVariable(name="shortUrl") String shortUrl) {
+    public ResponseEntity<Boolean> deleteShortUrl(@PathVariable(name="shortUrl") String shortUrl) {
 
         return new ResponseEntity<>(urlShortenerService.deleteShortUrl(shortUrl), HttpStatus.OK);
     }
