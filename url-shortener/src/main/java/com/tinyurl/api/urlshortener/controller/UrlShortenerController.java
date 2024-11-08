@@ -24,7 +24,7 @@ public class UrlShortenerController {
 
 
     @PostMapping(
-            value = "/v2/shorten",
+            value = "/shorten",
             consumes = "application/json",
             produces = "application/json"
     )
@@ -41,7 +41,7 @@ public class UrlShortenerController {
     }
 
     @GetMapping(
-            value = "/v2/{shortUrl}"
+            value = "/{shortUrl}"
     )
     public ResponseEntity<?> doRedirect(@PathVariable(name="shortUrl") String shortUrl) {
 
@@ -60,7 +60,7 @@ public class UrlShortenerController {
     }
 
     @DeleteMapping(
-            value = "/v2/{shortUrl}"
+            value = "/{shortUrl}"
     )
     public ResponseEntity<Boolean> deleteShortUrl(@PathVariable(name="shortUrl") String shortUrl) {
 
