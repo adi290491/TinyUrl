@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.security.web.util.matcher.IpAddressMatcher;
+
+import java.util.Objects;
 
 @Configuration
 @EnableWebSecurity
@@ -25,14 +29,16 @@ public class WebSecurity {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserManagementService userManagementService;
+    private final JwtUtil jwtUtil;
 
     @Value("${gateway.ip}")
     private String gatewayIP;
 
     @Autowired
-    public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder, UserManagementService userManagementService) {
+    public WebSecurity(BCryptPasswordEncoder bCryptPasswordEncoder, UserManagementService userManagementService, JwtUtil jwtUtil) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userManagementService = userManagementService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Bean
@@ -42,13 +48,17 @@ public class WebSecurity {
         authenticationManagerBuilder.userDetailsService(userManagementService).passwordEncoder(bCryptPasswordEncoder);
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtUtil, userManagementService);
+        jwtAuthenticationFilter.setFilterProcessesUrl("/users/login");
+
+
         http.csrf(AbstractHttpConfigurer::disable);
 
         http
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/users/**")
-                                                .access(new WebExpressionAuthorizationManager("hasIpAddress('" + gatewayIP + "')"))
-                        .anyRequest().authenticated())
-                .addFilter(new AuthenticationFilter(authenticationManager, null))
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/users/**").permitAll()
+                                                //.access(new WebExpressionAuthorizationManager("hasIpAddress('" + gatewayIP + "')"))
+                        )
+                .addFilter(jwtAuthenticationFilter)
                 .authenticationManager(authenticationManager)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));

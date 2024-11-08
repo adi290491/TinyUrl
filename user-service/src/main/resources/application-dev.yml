@@ -1,16 +1,19 @@
 spring:
-  profile:
-    active: dev
   application:
-    name: url-shortener
+    name: user-service
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+  datasource:
+    url: ${PG_DATASOURCE_URL}
+    username: ${PG_USERNAME}
+    password: ${PG_PASSWORD}
   cloud:
     loadbalancer:
       enabled: true
-  redis:
-    host: ${HOST_NAME}
-    port: ${PORT_NO}
-    shorten_prefix: "long-to-short:"
-    redirect_prefix: "key-to-long:"
+server:
+  port: ${PORT:0}
 eureka:
   server:
     username: ${EUREKA_DISCOVERY_USERNAME}
@@ -25,10 +28,5 @@ eureka:
     leaseRenewalIntervalInSeconds: 10 #send heartbeat every 10 seconds
     leaseExpirationDurationInSeconds: 30 #instance will be marked as unresponsive after 30 seconds
     instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-server:
-  port: ${PORT:0}
-tinyurl:
-  api:
-    url: http://${spring.url}:${gateway.port}/url-shortener/api/
-gateway:
-  port: 8000
+jwt:
+  token: ${JWT_SECRET_TOKEN}

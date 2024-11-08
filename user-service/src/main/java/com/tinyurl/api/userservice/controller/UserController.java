@@ -36,10 +36,10 @@ public class UserController {
         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public String loginUser(@Valid @RequestBody LoginRequestModel loginRequestModel) {
         UserDTO userDTO = modelMapper.map(loginRequestModel, UserDTO.class);
 
         return "login user";
-    }
+    }*/
 }

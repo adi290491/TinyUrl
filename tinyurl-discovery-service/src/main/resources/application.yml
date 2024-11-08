@@ -1,22 +1,18 @@
 spring:
   profile:
-    active: dev
+    active: local
   application:
     name: discovery-service
-server:
-  port: 7001
 tinyurl:
   api:
     url: "www.tinyurl.com"
-
+server:
+  port: 8001
 eureka:
-  server:
-    username: ${EUREKA_DISCOVERY_USERNAME}
-    password: ${EUREKA_DISCOVERY_PASSWORD}
   client:
     register-with-eureka: false
     fetch-registry: false
-    hostname: ${EUREKA_CLIENT_HOSTNAME}
+    hostname: localhost
     service-url:
       defaultZone: http://${eureka.client.hostname}:${server.port}/eureka
 #  server:
