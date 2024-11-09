@@ -68,12 +68,11 @@ This is a Url-shortener service that well, shortens a long url into a 7 length s
    		  	Response: 200 if successful  
      
 		b) User Login
-
      			curl -X POST http://localhost:8000/user-service/users/login
-			   -d ‘{
-			       "email": "test@test.com",
-			       "password": "test123"
-			   }’
+			-d ‘{
+			   "email": "test@test.com",
+			   "password": "test123"
+			}’
 
    		Response: 200 if successful, JWT token in header
 
