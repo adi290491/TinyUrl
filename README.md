@@ -29,37 +29,37 @@ This is a Url-shortener service that well, shortens a long url into a 7 length s
 	1) Url-shortener  
    		a) For shortening 
 
-		    curl \-X POST http://localhost:8000/url-shortener/api/shorten  
-		   \-H “Authorization: Bearer \<jwt-token\>”  
-		   \-d ‘{  
-		       "longUrl": \<your url\>  
+		    curl -X POST http://localhost:8000/url-shortener/api/shorten  
+		   -H “Authorization: Bearer jwt-token”  
+		   -d ‘{  
+		       "longUrl": "http://www.example.com"
 		   }’  
 		     
 		   {  
-		       "key": "\<key\>",  
-		       "longUrl": \<long url\>,  
-		       "shortUrl": \<short url\>,  
-		       "new": \<flag for new/existing\>  
+		       "key": "abc1234",  
+		       "longUrl": "http://www.example.com",  
+		       "shortUrl": "http://localhost:8000/url-shortener/api/abc1234",  
+		       "new": true (or false) 
 		   }  
    	A newly creating short url should return with 204 Created, else 200 OK.  
    
 
 		b) Redirect:  
-			curl \<short\_url\>  
-			\-H “Authorization: Bearer \<jwt-token\>”  
+			curl "http://localhost:8000/url-shortener/api/abc1234" 
+			-H “Authorization: Bearer jwt-token”  
 			HTTP/1.1 302 Found  
-			Location: \<original url\>  
+			Location: "http://www.example.com"
 			content-length: 0
 	
 		c) Delete:  
-			curl \_X DELETE \<short\_url\>  
-			\-H “Authorization: Bearer \<jwt-token\>”  
+			curl -X DELETE "http://localhost:8000/url-shortener/api/abc1234"
+			-H “Authorization: Bearer jwt-token”  
 			Response: true if delete successful, else false
 
 	2) User Service    
 		a) User Register: 
-	   		curl \-X POST http://localhost:8000/user-service/users/register  
-	   		\-d ‘{
+	   		curl -X POST http://localhost:8000/user-service/users/register  
+	   		-d ‘{
 			   "username": "test",
 			   "email": "test@test.com",  
 			   "Password": "test123"
@@ -69,17 +69,15 @@ This is a Url-shortener service that well, shortens a long url into a 7 length s
      
 		b) User Login
 
-     			curl \-X POST http://localhost:8000/user-service/users/login
-			   \-d ‘{
+     			curl -X POST http://localhost:8000/user-service/users/login
+			   -d ‘{
 			       "email": "test@test.com",
 			       "password": "test123"
 			   }’
 
-   	Response: 200 if successful
+   		Response: 200 if successful, JWT token in header
 
-   			JWT token in header
-
-	Feel free to adjust your configurations.
+		Feel free to adjust your configurations.
 
 ## Getting started
 
