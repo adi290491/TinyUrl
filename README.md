@@ -83,8 +83,8 @@ This is a Url-shortener service that well, shortens a long url into a 7 length s
 1) First start the discovery service  
 2) Then start your core api services  
 3) Then the gateway  
-4) Also make sure to run the docker compose in url-shorter service to run redis  
-5) Call and user register service and create credentials  
+4) Also make sure to run the docker compose in url-shortener service to run redis  
+5) Invoke the user register service and create credentials  
 6) Invoke the user login service with the credentials to get the jwt token  
 7) Pass the jwt token in Auth header when invoking the url-shortener services
 
