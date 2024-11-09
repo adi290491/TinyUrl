@@ -33,13 +33,12 @@ This is a Url-shortener service that well, shortens a long url into a 7 length s
 1) Url-shortener  
    a) For shortening 
 
-    Endpoint: http://localhost:8000/url-shortener/api/shorten  
-    Headers: Authorization: Bearer \<jwt-token\>  
-    Method: POST  
-    Request: {  
+    curl \-X POST http://localhost:8000/url-shortener/api/shorten  
+   \-H “Authorization: Bearer \<jwt-token\>”  
+   \-d ‘{  
        "longUrl": \<your url\>  
-   }  
-   Response:   
+   }’  
+     
    {  
        "key": "\<key\>",  
        "longUrl": \<long url\>,  
@@ -50,52 +49,46 @@ This is a Url-shortener service that well, shortens a long url into a 7 length s
    
 
 	b) Redirect:  
-		Endpoint: \<short\_url\>  
-		Headers: Authorization: Bearer \<jwt-token\>  
-		Method: GET  
-		Request: N/A  
-		Response:  
+		curl \<short\_url\>  
+		\-H “Authorization: Bearer \<jwt-token\>”  
 		HTTP/1.1 302 Found  
 Location: \<original url\>  
 content-length: 0
 
 	c) Delete:  
-		Endpoint: \<short\_url\>  
-		Headers: Authorization: Bearer \<jwt\_token\>  
-		Method: DELETE  
-		Request: N/A  
+		curl \_X DELETE \<short\_url\>  
+		\-H “Authorization: Bearer \<jwt-token\>”  
 		Response: true if delete successful, else false
 
 2) User Service    
-1) User Register
+1) User Register  
+                           curl \-X POST http://localhost:8000/user-service/users/register  
+   		\-d ‘{
 
-                        Endpoint: http://localhost:8000/user-service/users/register  
-		Method: POST  
-		Headers: N/A  
-		Request:
+   "username": \<username\>,
 
-			{  
-    "username": \<username\>,  
-    "email": \<email\>,  
-    "Password": \<pwd\>  
-}  
-		  Response:  
-			200 if successful
+   "email": \<email\>,  
+   "Password": \<pwd\>
 
+   }’
+
+   		  Response: 200 if successful  
+     
 2) User Login
 
-     Endpoint: http://localhost:8000/user-service/users/login
+     curl \-X POST http://localhost:8000/user-service/users/login
 
-		  Method: POST  
-		  Headers: N/A  
-		  Request:  
-			{  
-    "email": \<email\>,  
-    "password": \<pwd\>  
-}  
-		  Response:  
-			200 if successful  
-			JWT token in header
+   \-d ‘{
+
+       "email": \<email\>,
+
+       "password": \<pwd\>
+
+   }’
+
+   	Response: 200 if successful
+
+   			JWT token in header
 
 Feel free to adjust your configurations.
 
